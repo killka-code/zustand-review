@@ -1,5 +1,6 @@
 import { WhiteCard } from "../../components";
 import { useBearStore } from "../../stores";
+import { useShallow } from "zustand/react/shallow";
 
 export const BearPage = () => {
     return (
@@ -14,6 +15,8 @@ export const BearPage = () => {
                 <PolarBearsCard />
 
                 <PandaBearsCard />
+
+                <BearsDisplay />
             </div>
         </>
     );
@@ -72,6 +75,24 @@ export const PandaBearsCard = () => {
                 <span className="text-3xl mx-2 lg:mx-10"> {pandaBears} </span>
                 <button onClick={() => increasePandaBears(-1)}>-1</button>
             </div>
+        </WhiteCard>
+    );
+};
+
+export const BearsDisplay = () => {
+	/**
+	 * Se usa el shallow para evitar re-renderizaciones innecesarias
+	 * Analiza las propiedades y valida si cambiaron para lanzar el re-renderizado
+	 */
+    const bears = useBearStore(useShallow((state) => state.bears));
+	const doNothing = useBearStore((state) => state.doNothing);
+
+    return (
+        <WhiteCard>
+            <h2>Osos</h2>
+
+			<button onClick={() => doNothing()}>Do Nothing</button>
+            <pre>{JSON.stringify(bears, null, 2)}</pre>
         </WhiteCard>
     );
 };

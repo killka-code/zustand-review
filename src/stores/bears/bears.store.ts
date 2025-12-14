@@ -1,13 +1,24 @@
 import { create } from "zustand";
 
+interface IBear {
+    id: number;
+    name: string;
+    color: string;
+    population: number;
+}
+
 interface BearState {
     blackBears: number;
     polarBears: number;
     pandaBears: number;
 
+	bears: IBear[];
+
     increaseBlackBears: (by: number) => void;
     increasePolarBears: (by: number) => void;
     increasePandaBears: (by: number) => void;
+
+	doNothing: () => void;
 }
 
 export const useBearStore = create<BearState>((set) => ({
@@ -15,10 +26,21 @@ export const useBearStore = create<BearState>((set) => ({
     polarBears: 5,
     pandaBears: 1,
 
+	bears: [
+		{
+			id: 1,
+			name: "Oso Polar",
+			color: "blanco",
+			population: 5,
+		},
+	],
+
     increaseBlackBears: (by: number) =>
         set((state) => ({ blackBears: state.blackBears + by })),
     increasePolarBears: (by: number) =>
         set((state) => ({ polarBears: state.polarBears + by })),
     increasePandaBears: (by: number) =>
         set((state) => ({ pandaBears: state.pandaBears + by })),
+
+	doNothing: () => set((state) => ({ bears: [...state.bears] })),
 }));
